@@ -1,0 +1,696 @@
+<app-cursor
+  [mode]="previewing() ? content.appearance.cursor : 'none'"
+  [color]="content.appearance.accent"
+/>
+<header class="editor-heading">
+  <div>
+    <span class="eyebrow">Deine Website</span>
+    <h1>Portfolio</h1>
+    <p class="muted">Wähle einen Bereich, um deine Seite anzupassen.</p>
+  </div>
+  <a class="button" href="/" target="_blank" rel="noopener">Website ansehen ↗</a>
+</header>
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (notice()) {
+  <p class="notice" role="status">{{ notice() }}</p>
+}
+@if (loading()) {
+  <p role="status">Portfolio wird geladen…</p>
+} @else {
+  <div class="portfolio-editor">
+    <aside class="editor-sidebar">
+      <nav aria-label="Portfolio-Bereiche">
+        @for (item of sections; track item.id) {
+          <button
+            type="button"
+            [class.selected]="section() === item.id"
+            [attr.aria-current]="section() === item.id ? 'page' : null"
+            (click)="selectSection(item.id)"
+          >
+            <span class="editor-nav-symbol" aria-hidden="true">{{ item.icon }}</span
+            ><span
+              ><strong>{{ item.label }}</strong
+              ><small>{{ item.hint }}</small></span
+            >
+            @if (item.id === 'links') {
+              <span class="section-count">{{ links().length }}</span>
+            }
+          </button>
+        }
+      </nav>
+      <div class="editor-sidebar-note">
+        <span class="save-indicator" [class.unsaved]="hasChanges"></span
+        >{{ hasChanges ? 'Ungespeicherte Änderungen' : 'Alle Änderungen gespeichert' }}
+      </div>
+    </aside>
+    <div class="editor-main">
+      <div class="editor-section-heading">
+        <div>
+          <span class="eyebrow">{{ activeSection.hint }}</span>
+          <h2>{{ activeSection.label }}</h2>
+        </div>
+        <span class="editor-step">{{ sectionNumber }} / {{ sections.length }}</span>
+      </div>
+      <form
+        id="portfolio-settings-form"
+        class="panel editor-settings"
+        [hidden]="section() === 'links'"
+        (ngSubmit)="submitProfile(profileForm)"
+        #profileForm="ngForm"
+      >
+        <section
+          class="editor-section"
+          [hidden]="section() !== 'profile'"
+          aria-label="Profil & Bilder"
+        >
+          <div class="form-grid">
+            <label
+              >Titel<input name="title" [(ngModel)]="form.title" required maxlength="150"
+            /></label>
+            <label
+              >Untertitel<input
+                name="subtitle"
+                [(ngModel)]="form.subtitle"
+                required
+                maxlength="500"
+            /></label>
+            <label
+              >Avatar-URL<input
+                type="url"
+                name="avatarUrl"
+                [(ngModel)]="form.avatarUrl"
+                placeholder="https://…"
+            /></label>
+            <label
+              >Banner-URL<input
+                type="url"
+                name="bannerUrl"
+                [(ngModel)]="form.bannerUrl"
+                placeholder="https://…"
+            /></label>
+          </div>
+          <p class="muted small">
+            Discord-Synchronisierung kannst du im Bereich Discord verwalten.
+          </p>
+        </section>
+        <section
+          class="editor-section"
+          [hidden]="section() !== 'design'"
+          aria-label="Design & Effekte"
+        >
+          <h2 class="section-title">Hintergrund</h2>
+          <div class="form-grid four">
+            <label
+              >Preset<select name="backgroundPreset" [(ngModel)]="form.backgroundPreset">
+                @for (option of backgrounds; track option.key) {
+                  <option [value]="option.key">{{ option.label }}</option>
+                }
+              </select></label
+            >
+            <label
+              >Abdunklung (0–1)<input
+                type="number"
+                name="overlayOpacity"
+                [(ngModel)]="form.overlayOpacity"
+                min="0"
+                max="1"
+                step="0.05"
+                required
+            /></label>
+            <label
+              >Unschärfe (px)<input
+                type="number"
+                name="blur"
+                [(ngModel)]="form.blur"
+                min="0"
+                max="60"
+                required
+            /></label>
+            <label
+              >Vignette (0–1)<input
+                type="number"
+                name="vignette"
+                [(ngModel)]="form.vignette"
+                min="0"
+                max="1"
+                step="0.05"
+                required
+            /></label>
+          </div>
+          <div class="form-grid three">
+            <label
+              >Hintergrund-Animation<select
+                name="animation"
+                [(ngModel)]="content.appearance.animation"
+              >
+                @for (option of animations; track option.key) {
+                  <option [value]="option.key">{{ option.label }}</option>
+                }
+              </select></label
+            ><label
+              >Geschwindigkeit<select name="speed" [(ngModel)]="content.appearance.speed">
+                <option value="slow">Langsam</option>
+                <option value="normal">Normal</option>
+                <option value="fast">Schnell</option>
+              </select></label
+            ><label
+              >Cursor-Effekt<select name="cursor" [(ngModel)]="content.appearance.cursor">
+                @for (option of cursors; track option.key) {
+                  <option [value]="option.key">{{ option.label }}</option>
+                }
+              </select></label
+            ><label
+              >Effektfarbe<input
+                type="color"
+                name="accent"
+                [(ngModel)]="content.appearance.accent" /></label
+            ><label
+              >Eigener Medienhintergrund<select
+                name="mediaType"
+                [(ngModel)]="content.appearance.mediaType"
+              >
+                <option value="none">Keiner</option>
+                <option value="image">Bild</option>
+                <option value="video">Video (stumm, in Schleife)</option>
+              </select></label
+            ><label
+              >Bild-/Video-URL<input
+                name="mediaUrl"
+                [(ngModel)]="content.appearance.mediaUrl"
+                placeholder="https://… oder /f/key/raw"
+            /></label>
+          </div>
+          <div class="form-grid">
+            <label
+              >Partikeldichte<select name="density" [(ngModel)]="content.appearance.density">
+                <option value="low">Wenige</option>
+                <option value="normal">Normal</option>
+                <option value="high">Viele</option>
+              </select></label
+            ><label class="checkbox"
+              ><input
+                type="checkbox"
+                name="interactiveParticles"
+                [(ngModel)]="content.appearance.interactive"
+              />Partikelnetz mit Cursor verbinden</label
+            >
+          </div>
+          <p class="muted small">
+            Animationen und Cursor-Effekte beachten „Bewegung reduzieren“. Auf Touch-Geräten bleibt
+            der Cursor-Effekt aus.
+          </p>
+          <div class="inline-actions design-preview-actions">
+            <button type="button" (click)="previewEffects()">Effekte voranzeigen</button>
+            @if (previewing()) {
+              <button type="button" (click)="resetPreview()">Gespeichertes Design anzeigen</button
+              ><span class="muted small">Vorschau – noch nicht gespeichert.</span>
+            }
+          </div>
+          <label
+            >Portfolio-Animationen<select name="motion" [(ngModel)]="content.motion">
+              <option value="lively">Lebendig</option>
+              <option value="subtle">Dezent</option>
+              <option value="none">Aus</option>
+            </select></label
+          >
+          <h2 class="section-title">Animierte Titel</h2>
+          <div class="form-grid">
+            <label
+              >Profil-Titel<select name="titleEffect" [(ngModel)]="content.titleEffect">
+                @for (option of titleEffects; track option.key) {
+                  <option [value]="option.key">{{ option.label }}</option>
+                }
+              </select></label
+            ><label
+              >Browser-Tab-Titel<select name="tabTitleEffect" [(ngModel)]="content.tabTitleEffect">
+                @for (option of tabEffects; track option.key) {
+                  <option [value]="option.key">{{ option.label }}</option>
+                }
+              </select></label
+            >
+          </div>
+          <div class="title-preview">
+            <app-animated-title
+              [text]="form.title || 'Dein Titel'"
+              [effect]="content.titleEffect"
+              [accent]="content.appearance.accent"
+            />
+          </div>
+        </section>
+        <section
+          class="editor-section"
+          [hidden]="section() !== 'music'"
+          aria-label="Musik & Wiedergabe"
+        >
+          <div class="music-settings">
+            <label
+              >Spotify Track<input
+                name="spotifyTrackId"
+                [(ngModel)]="form.spotifyTrackId"
+                placeholder="Track-URL oder ID" /></label
+            ><label class="checkbox"
+              ><input
+                type="checkbox"
+                name="spotifyAutoplay"
+                [(ngModel)]="content.spotifyAutoplay"
+              />Spotify beim Betreten automatisch starten (wenn der Browser es erlaubt)</label
+            >
+            <p class="muted small">
+              Volle Songs hängen von deiner Spotify-Sitzung und der Browser-Unterstützung ab. Der
+              Player bleibt manuell bedienbar.
+            </p>
+            <h2 class="section-title">Eigener Musikplayer</h2>
+            <p class="muted small">
+              Wie im Beispiel: vollständige Audiodatei mit Play/Pause, Zeitleiste und Lautstärke.
+              Verwende eine eigene Datei oder eine Datei, für die du die nötigen Rechte hast. Bei
+              konfigurierter Audiodatei ersetzt dieser Player den Spotify-Embed.
+            </p>
+            <div class="form-grid">
+              <label
+                >Audio-URL<input
+                  name="audioUrl"
+                  [(ngModel)]="content.audio.url"
+                  placeholder="https://…/musik.mp3 oder /f/key/raw" /></label
+              ><label
+                >Titel<input
+                  name="audioTitle"
+                  [(ngModel)]="content.audio.title"
+                  maxlength="100" /></label
+              ><label
+                >Audiodatei hochladen (max. 50 MB)<input
+                  type="file"
+                  accept="audio/mpeg,audio/mp3,audio/ogg,audio/wav,audio/x-wav,audio/mp4"
+                  (change)="uploadAudio($event)" /></label
+              ><label class="checkbox"
+                ><input
+                  type="checkbox"
+                  name="audioAutoplay"
+                  [(ngModel)]="content.audio.autoplay"
+                />Musik beim Betreten starten (wenn erlaubt)</label
+              >
+            </div>
+          </div>
+        </section>
+        <section
+          class="editor-section"
+          [hidden]="section() !== 'content'"
+          aria-label="Buttons & Leistungen"
+        >
+          <label class="checkbox"
+            ><input
+              type="checkbox"
+              name="showLinkText"
+              [(ngModel)]="content.showLinkText"
+            />Social-Links mit Text anzeigen (sonst nur Icons)</label
+          >
+          <p class="muted small">
+            Die Bezeichnung bleibt als Tooltip und für Screenreader erhalten.
+          </p>
+          <h2 class="section-title">Buttons</h2>
+          <p class="muted small">
+            Beschriftung und Ziel frei wählen: https://…, /Pfad oder #services. Ohne Buttons bleibt
+            der Bereich ausgeblendet.
+          </p>
+          @for (button of content.buttons; track $index; let i = $index) {
+            <div class="button-editor">
+              <label
+                >Beschriftung<input
+                  [name]="'buttonLabel' + i"
+                  [(ngModel)]="button.label"
+                  required
+                  maxlength="60" /></label
+              ><label
+                >Ziel<input
+                  [name]="'buttonUrl' + i"
+                  [(ngModel)]="button.url"
+                  required
+                  placeholder="https://… oder #services"
+              /></label>
+              <div class="inline-actions">
+                <button
+                  type="button"
+                  (click)="moveButton(i, -1)"
+                  [disabled]="i === 0"
+                  aria-label="Button nach oben"
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  (click)="moveButton(i, 1)"
+                  [disabled]="i === content.buttons.length - 1"
+                  aria-label="Button nach unten"
+                >
+                  ↓
+                </button>
+                <button type="button" class="danger" (click)="content.buttons.splice(i, 1)">
+                  Entfernen
+                </button>
+              </div>
+            </div>
+          }
+          <button
+            type="button"
+            (click)="content.buttons.push({ label: 'Neuer Button', url: '/' })"
+            [disabled]="content.buttons.length >= 10"
+          >
+            Button hinzufügen
+          </button>
+          <h2 class="section-title">Weitere Bereiche</h2>
+          <p class="muted small">
+            Bis zu zwölf Bereiche mit Text, Listen und eigenen Buttons. Die Reihenfolge ist frei
+            wählbar.
+          </p>
+          @for (block of content.sections; track $index; let i = $index) {
+            <fieldset class="content-block-editor">
+              <legend>Bereich {{ i + 1 }}</legend>
+              <div class="inline-actions">
+                <button
+                  type="button"
+                  (click)="moveSection(i, -1)"
+                  [disabled]="i === 0"
+                  aria-label="Bereich nach oben"
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  (click)="moveSection(i, 1)"
+                  [disabled]="i === content.sections.length - 1"
+                  aria-label="Bereich nach unten"
+                >
+                  ↓
+                </button>
+                <button type="button" class="danger" (click)="content.sections.splice(i, 1)">
+                  Bereich entfernen
+                </button>
+              </div>
+              <div class="form-grid">
+                <label
+                  >Bereichstitel<input
+                    [name]="'blockTitle' + i"
+                    [(ngModel)]="block.title"
+                    required
+                    maxlength="100" /></label
+                ><label
+                  >Text<textarea
+                    [name]="'blockText' + i"
+                    [(ngModel)]="block.text"
+                    rows="3"
+                    maxlength="3000"
+                  ></textarea></label
+                ><label
+                  >Liste (ein Eintrag pro Zeile)<textarea
+                    [name]="'blockItems' + i"
+                    [ngModelOptions]="{ updateOn: 'blur' }"
+                    [ngModel]="block.items.join('\n')"
+                    (ngModelChange)="setSectionItems(i, $event)"
+                    rows="3"
+                  ></textarea>
+                </label>
+              </div>
+              @for (button of block.buttons; track $index; let j = $index) {
+                <div class="button-editor">
+                  <label
+                    >Button-Text<input
+                      [name]="'blockButtonLabel' + i + '_' + j"
+                      [(ngModel)]="button.label"
+                      required
+                      maxlength="60" /></label
+                  ><label
+                    >Button-Ziel<input
+                      [name]="'blockButtonUrl' + i + '_' + j"
+                      [(ngModel)]="button.url"
+                      required
+                  /></label>
+                  <button type="button" (click)="block.buttons.splice(j, 1)">Entfernen</button>
+                </div>
+              }
+              <button
+                type="button"
+                (click)="block.buttons.push({ label: 'Neuer Button', url: '/' })"
+                [disabled]="block.buttons.length >= 10"
+              >
+                Button im Bereich hinzufügen
+              </button>
+            </fieldset>
+          }
+          <button type="button" (click)="addSection()" [disabled]="content.sections.length >= 12">
+            Bereich hinzufügen
+          </button>
+          <h2 class="section-title">Leistungsbereich</h2>
+          <div class="form-grid">
+            <label
+              >Überschrift<input
+                name="servicesTitle"
+                [(ngModel)]="content.servicesTitle"
+                maxlength="100" /></label
+            ><label
+              >Leistungen (eine pro Zeile)<textarea
+                name="servicesText"
+                [(ngModel)]="servicesText"
+                rows="5"
+                placeholder="Next.js / Angular / React"
+              ></textarea>
+            </label>
+          </div>
+          <p class="muted small">
+            Leere Liste blendet den Leistungsbereich aus. Das Sprungziel bleibt #services.
+          </p>
+        </section>
+        <section
+          class="editor-section"
+          [hidden]="section() !== 'discord'"
+          aria-label="Discord-Profil"
+        >
+          <h2 class="section-title">Discord-Profil</h2>
+          <p class="muted small">
+            Avatar, globales Banner und Anzeigename direkt von Discord übernehmen. Automatische
+            Aktualisierung etwa alle fünf Minuten. Die manuellen Profilwerte bleiben als Rückfall
+            erhalten.
+          </p>
+          @if (!discordConfigured()) {
+            <p class="muted small">
+              Server-Konfiguration fehlt: DISCORD_BOT_TOKEN setzen und die API neu starten. Hier
+              niemals einen persönlichen Discord-Token eingeben.
+            </p>
+          }
+          <div class="form-grid">
+            <label
+              >Discord-Benutzer-ID<input
+                name="discordUserId"
+                [(ngModel)]="content.discord.userId"
+                pattern="[0-9]{17,20}"
+                placeholder="17–20-stellige Benutzer-ID"
+            /></label>
+            <div class="inline-actions">
+              <button
+                type="button"
+                [disabled]="busy() || !discordConfigured() || !content.discord.userId"
+                (click)="loadDiscord()"
+              >
+                Discord-Vorschau laden
+              </button>
+            </div>
+          </div>
+          <div class="inline-actions discord-settings">
+            <label class="checkbox"
+              ><input
+                type="checkbox"
+                name="discordAvatar"
+                [(ngModel)]="content.discord.syncAvatar"
+              />Avatar synchronisieren</label
+            ><label class="checkbox"
+              ><input
+                type="checkbox"
+                name="discordBanner"
+                [(ngModel)]="content.discord.syncBanner"
+              />Banner synchronisieren</label
+            ><label class="checkbox"
+              ><input
+                type="checkbox"
+                name="discordName"
+                [(ngModel)]="content.discord.syncName"
+              />Anzeigename synchronisieren</label
+            ><label class="checkbox"
+              ><input
+                type="checkbox"
+                name="discordBadges"
+                [(ngModel)]="content.discord.showBadges"
+              />Öffentliche Discord-Abzeichen anzeigen</label
+            >
+          </div>
+          <p class="muted small">
+            Unterstützt öffentliche Account-Abzeichen wie HypeSquad, Early Supporter und Entwickler.
+            Nitro- und Boost-Abzeichen werden vom Bot-Endpunkt nicht vollständig bereitgestellt.
+          </p>
+          @if (discordPreview()) {
+            <div class="discord-preview">
+              @if (discordPreview()!.bannerUrl) {
+                <img
+                  class="discord-banner"
+                  [src]="discordPreview()!.bannerUrl"
+                  alt="Discord-Banner"
+                />
+              } @else {
+                <div
+                  class="discord-banner"
+                  [style.background]="discordPreview()!.accentColor || '#202331'"
+                ></div>
+              }
+              <div class="profile-heading">
+                <img class="avatar" [src]="discordPreview()!.avatarUrl" alt="Discord-Avatar" />
+                <div>
+                  <strong>{{ discordPreview()!.displayName }}</strong>
+                  <p class="muted small">{{ discordPreview()!.username }}</p>
+                </div>
+              </div>
+              <div class="discord-badges">
+                @for (badge of discordPreview()!.badges || []; track badge.id) {
+                  <span
+                    class="discord-badge"
+                    [style.--badge-color]="badge.color"
+                    [title]="badge.label"
+                    [attr.aria-label]="badge.label"
+                    >{{ badge.symbol }}</span
+                  >
+                } @empty {
+                  <span class="muted small"
+                    >Keine öffentlichen Abzeichen von Discord geliefert.</span
+                  >
+                }
+              </div>
+              <button type="button" (click)="importDiscord()">
+                Einmalig in die Profilfelder übernehmen
+              </button>
+            </div>
+          }
+        </section>
+        <section
+          class="editor-section"
+          [hidden]="section() !== 'seo'"
+          aria-label="Suchmaschinen & Vorschau"
+        >
+          <div class="form-grid">
+            <label>SEO-Titel<input name="seoTitle" [(ngModel)]="form.seoTitle" /></label>
+            <label
+              >SEO-Beschreibung<input name="seoDescription" [(ngModel)]="form.seoDescription"
+            /></label>
+            <label
+              >Vorschaubild-URL<input
+                type="url"
+                name="seoOgImageUrl"
+                [(ngModel)]="form.seoOgImageUrl"
+                placeholder="https://…"
+            /></label>
+          </div>
+          <p class="muted small">
+            Diese Angaben erscheinen in Suchmaschinen und beim Teilen deiner Website.
+          </p>
+        </section>
+        <footer class="editor-savebar">
+          <div>
+            <strong>{{
+              hasChanges ? 'Änderungen noch nicht gespeichert' : 'Dein Portfolio ist aktuell'
+            }}</strong
+            ><span>Speichert alle Portfolio-Einstellungen. Links werden separat gespeichert.</span>
+          </div>
+          <button class="primary" [disabled]="busy()">
+            {{ busy() ? 'Wird gespeichert…' : 'Änderungen speichern' }}
+          </button>
+        </footer>
+      </form>
+      <section class="panel editor-links" [hidden]="section() !== 'links'">
+        <p class="muted">
+          Die Plattform bestimmt automatisch Icon und Farbe. Eine eigene Farbe ist optional.
+        </p>
+        <div class="link-list">
+          @for (link of links(); track link.id) {
+            @let style = appearance(link);
+            <div class="list-row">
+              <a
+                class="social-link"
+                [href]="link.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                [style.--platform-color]="style.color"
+              >
+                <app-platform-icon [type]="style.type" />
+                {{ link.label || style.label }}</a
+              ><span class="muted grow break">{{ link.url }}</span>
+              <button [disabled]="busy()" (click)="edit(link)">Bearbeiten</button>
+              <button class="danger" [disabled]="busy()" (click)="remove(link.id)">
+                Entfernen
+              </button>
+            </div>
+          } @empty {
+            <p class="empty">Noch keine Links. Füge deinen ersten hinzu.</p>
+          }
+        </div>
+        <form (ngSubmit)="add()" #linkForm="ngForm">
+          <h3>{{ editingId ? 'Link bearbeiten' : 'Link hinzufügen' }}</h3>
+          <div class="form-grid">
+            <label
+              >Plattform<select name="type" [(ngModel)]="link.type">
+                <option value="auto">Automatisch anhand der URL</option>
+                @for (platform of platforms; track platform.key) {
+                  <option [value]="platform.key">{{ platform.label }}</option>
+                }
+              </select></label
+            >
+            <label
+              >URL<input
+                type="url"
+                name="url"
+                [(ngModel)]="link.url"
+                required
+                placeholder="https://www.twitch.tv/deinname"
+            /></label>
+            <label
+              >Bezeichnung (optional)<input
+                name="label"
+                [(ngModel)]="link.label"
+                [placeholder]="preview.label"
+            /></label>
+            <label
+              >Reihenfolge<input
+                type="number"
+                name="sortOrder"
+                [(ngModel)]="link.sortOrder"
+                min="0"
+                max="9999"
+                required
+            /></label>
+          </div>
+          <div class="color-controls">
+            <label class="checkbox"
+              ><input type="checkbox" name="customColor" [(ngModel)]="customColor" />Eigene Farbe
+              verwenden</label
+            >
+            @if (customColor) {
+              <label class="color-input"
+                >Farbe<input type="color" name="color" [(ngModel)]="customHex"
+              /></label>
+            }
+          </div>
+          <div class="link-preview">
+            <span class="eyebrow">Vorschau</span
+            ><span class="social-link" [style.--platform-color]="preview.color"
+              ><app-platform-icon [type]="preview.type" /> {{ link.label || preview.label }}</span
+            ><code>{{ preview.color }}</code>
+          </div>
+          <div class="inline-actions">
+            <button class="primary" [disabled]="busy() || linkForm.invalid">
+              {{ editingId ? 'Änderungen speichern' : 'Link hinzufügen' }}
+            </button>
+            @if (editingId) {
+              <button type="button" [disabled]="busy()" (click)="cancelEdit()">Abbrechen</button>
+            }
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+}

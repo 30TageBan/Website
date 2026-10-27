@@ -1,0 +1,376 @@
+/* More transparent glass, with readable content on a moving background. */
+.compact-profile {
+  background: linear-gradient(150deg, #09090b91, #10080c99);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.content-block-editor {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin: 1.2rem 0;
+  background: #ffffff02;
+}
+
+.content-block-editor legend {
+  font-size: 0.85rem;
+  padding: 0 0.5rem;
+  color: #d9d6e8;
+}
+
+.content-block-editor > .inline-actions {
+  margin-bottom: 1.2rem;
+}
+
+.section-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+  color: #c4c4d0;
+}
+
+.discord-badges {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.discord-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 7px;
+  color: var(--badge-color);
+  background: color-mix(in srgb, var(--badge-color) 13%, transparent);
+  border: 1px solid color-mix(in srgb, var(--badge-color) 30%, transparent);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: help;
+}
+
+.discord-preview > .discord-badges {
+  margin: 0 1rem 1rem;
+}
+
+app-particles {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.scene-particles {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+}
+
+.motion-waves {
+  inset: -40%;
+  width: 180%;
+  height: 180%;
+  background: repeating-radial-gradient(
+    ellipse at 50% 60%,
+    transparent 0 36px,
+    color-mix(in srgb, var(--scene-accent) 35%, transparent) 39px,
+    transparent 42px 80px
+  );
+  mask-image: radial-gradient(ellipse, #000, transparent 65%);
+  animation: scene-waves var(--scene-duration) ease-in-out infinite alternate;
+  opacity: 0.5;
+}
+
+.motion-matrix {
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 34px,
+    color-mix(in srgb, var(--scene-accent) 60%, transparent) 35px 37px,
+    transparent 38px 76px
+  );
+  mask-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 14px,
+    #000 16px 24px,
+    transparent 26px 44px
+  );
+  animation: digital-rain calc(var(--scene-duration) / 3) linear infinite;
+  opacity: 0.35;
+}
+
+@keyframes scene-waves {
+  from {
+    transform: scale(0.8) rotate(-12deg);
+  }
+  to {
+    transform: scale(1.2) rotate(12deg);
+  }
+}
+
+@keyframes digital-rain {
+  from {
+    transform: translateY(-88px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .editor-savebar {
+    position: static;
+    margin-top: 1rem;
+  }
+}
+
+.log-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.log-heading h2 {
+  margin: 0;
+}
+
+.log-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+}
+
+.log-row strong {
+  font-size: 0.85rem;
+}
+
+.log-row p {
+  margin-top: 0.35rem;
+  overflow-wrap: anywhere;
+}
+
+.log-error strong {
+  color: #fca5a5;
+}
+
+.log-row time {
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .log-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+}
+
+/* Keep the completed entrance free of a retained blur filter on the glass layer. */
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* More transparent glass, with readable content on a moving background. */
+.compact-profile {
+  background: linear-gradient(150deg, #09090b91, #10080c99);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.content-block-editor {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin: 1.2rem 0;
+  background: #ffffff02;
+}
+
+.content-block-editor legend {
+  font-size: 0.85rem;
+  padding: 0 0.5rem;
+  color: #d9d6e8;
+}
+
+.content-block-editor > .inline-actions {
+  margin-bottom: 1.2rem;
+}
+
+.section-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+  color: #c4c4d0;
+}
+
+.discord-badges {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.discord-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  color: var(--badge-color);
+  background: color-mix(in srgb, var(--badge-color) 13%, transparent);
+  border: 1px solid color-mix(in srgb, var(--badge-color) 30%, transparent);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: default;
+}
+
+.discord-preview > .discord-badges {
+  margin: 0 1rem 1rem;
+}
+
+app-particles {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.scene-particles {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+}
+
+.motion-waves {
+  inset: -40%;
+  width: 180%;
+  height: 180%;
+  background: repeating-radial-gradient(
+    ellipse at 50% 60%,
+    transparent 0 36px,
+    color-mix(in srgb, var(--scene-accent) 35%, transparent) 39px,
+    transparent 42px 80px
+  );
+  mask-image: radial-gradient(ellipse, #000, transparent 65%);
+  animation: scene-waves var(--scene-duration) ease-in-out infinite alternate;
+  opacity: 0.5;
+}
+
+.motion-matrix {
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 34px,
+    color-mix(in srgb, var(--scene-accent) 60%, transparent) 35px 37px,
+    transparent 38px 76px
+  );
+  mask-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 14px,
+    #000 16px 24px,
+    transparent 26px 44px
+  );
+  animation: digital-rain calc(var(--scene-duration) / 3) linear infinite;
+  opacity: 0.35;
+}
+
+@keyframes scene-waves {
+  from {
+    transform: scale(0.8) rotate(-12deg);
+  }
+  to {
+    transform: scale(1.2) rotate(12deg);
+  }
+}
+
+@keyframes digital-rain {
+  from {
+    transform: translateY(-88px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .editor-savebar {
+    position: static;
+    margin-top: 1rem;
+  }
+}
+
+.log-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.log-heading h2 {
+  margin: 0;
+}
+
+.log-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+}
+
+.log-row strong {
+  font-size: 0.85rem;
+}
+
+.log-row p {
+  margin-top: 0.35rem;
+  overflow-wrap: anywhere;
+}
+
+.log-error strong {
+  color: #fca5a5;
+}
+
+.log-row time {
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .log-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+}
+
+/* Keep the completed entrance free of a retained blur filter on the glass layer. */
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

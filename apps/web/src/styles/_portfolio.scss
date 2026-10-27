@@ -1,0 +1,366 @@
+/* Compact portfolio: banner, identity, music, socials, actions. */
+.compact-profile {
+  max-width: 480px;
+  border-radius: 17px;
+  padding: 22px;
+  background: linear-gradient(150deg, #09090bd9, #10080cdb);
+  border-color: color-mix(in srgb, var(--profile-accent) 25%, #ffffff0c);
+  box-shadow:
+    0 26px 90px #0007,
+    0 0 45px color-mix(in srgb, var(--profile-accent) 10%, transparent);
+}
+
+.profile-banner-wrap {
+  position: relative;
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.compact-profile .banner,
+.compact-profile .banner-placeholder {
+  height: 126px;
+  border-radius: 9px;
+}
+
+.profile-views {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 7px;
+  border-radius: 6px;
+  background: #0009;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.profile-views svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.compact-profile .profile-content {
+  padding: 0;
+}
+
+.compact-profile .profile-heading {
+  margin: 22px 0 26px;
+  padding: 12px 14px;
+  gap: 11px;
+  border-radius: 9px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--profile-accent) 10%, transparent)
+  );
+  border-bottom: 1px solid color-mix(in srgb, var(--profile-accent) 32%, transparent);
+}
+
+.compact-profile .avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+}
+
+.compact-profile .profile-heading h1 {
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.compact-profile .profile-heading p {
+  font-size: 0.82rem;
+  margin-top: 3px;
+}
+
+.compact-profile .profile-heading > div {
+  min-width: 0;
+}
+
+.compact-profile .music-player {
+  margin: 0 0 28px;
+  padding: 12px 8px;
+  background: linear-gradient(120deg, #ffffff09, transparent);
+  border: 0;
+  border-radius: 8px;
+}
+
+.compact-profile .music-title {
+  font-size: 0.75rem;
+}
+
+.compact-profile .spotify {
+  margin: 0 0 24px;
+  padding: 0;
+  border: 0;
+}
+
+.compact-profile .social-links {
+  justify-content: center;
+  gap: 12px;
+  padding: 15px 12px;
+  margin: 0;
+  background: #ffffff08;
+  border-radius: 12px;
+}
+
+.compact-profile .social-link {
+  padding: 10px;
+  border-radius: 6px;
+  border-color: transparent;
+  font-size: 0.8rem;
+}
+
+.compact-profile .icons-only .social-link {
+  width: 3rem;
+  height: 3rem;
+  justify-content: center;
+}
+
+.compact-profile .profile-actions {
+  margin-top: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.compact-profile .profile-actions .button {
+  font-size: 0.78rem;
+  text-align: left;
+  border-radius: 4px;
+  border-color: transparent;
+  background: #ffffff05;
+  padding: 10px;
+  justify-content: flex-start;
+  overflow-wrap: anywhere;
+}
+
+.action-link-icon {
+  padding: 5px;
+  background: #ffffff06;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+
+.compact-profile .services {
+  margin-top: 22px;
+  padding: 14px 10px;
+  border-top: 1px solid #ffffff0d;
+}
+
+.compact-profile .services ul {
+  font-size: 0.77rem;
+}
+
+.compact-profile .services .eyebrow {
+  font-size: 0.62rem;
+}
+
+.compact-profile .reset-link-warning {
+  font-size: 0.65rem;
+}
+
+.entry-gate button {
+  position: relative;
+  padding: 22px;
+  animation: entry-breathe 3s ease-in-out infinite;
+}
+
+.entry-symbol {
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.entry-symbol:before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border: 1px solid #ffffff26;
+  border-radius: 50%;
+  animation: entry-ripple 2.5s ease-out infinite;
+}
+
+.entry-symbol svg {
+  width: 34px;
+  height: 34px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.entry-symbol circle {
+  stroke-dasharray: 65 30;
+  transform-origin: center;
+  animation: entry-spin 4s linear infinite;
+}
+
+.entry-symbol path {
+  fill: #ffffff22;
+  stroke-linejoin: round;
+}
+
+.entry-label {
+  font-size: 1rem !important;
+}
+
+.entry-gate button:hover .entry-symbol {
+  filter: drop-shadow(0 0 9px #ffffff80);
+}
+
+.compact-profile:not([data-motion='none']) {
+  animation: card-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.compact-profile:not([data-motion='none']) .profile-content > *,
+.compact-profile:not([data-motion='none']) .profile-banner-wrap {
+  animation: part-reveal 0.7s both;
+}
+
+.compact-profile .profile-content > :nth-child(1) {
+  animation-delay: 0.12s;
+}
+
+.compact-profile .profile-content > :nth-child(2) {
+  animation-delay: 0.22s;
+}
+
+.compact-profile .profile-content > :nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+.compact-profile .profile-content > :nth-child(4) {
+  animation-delay: 0.42s;
+}
+
+.compact-profile .profile-content > :nth-child(5) {
+  animation-delay: 0.52s;
+}
+
+.compact-profile .social-link,
+.compact-profile .button,
+.compact-profile .avatar,
+.compact-profile .banner {
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s,
+    background 0.3s;
+}
+
+.compact-profile:not([data-motion='none']) .social-link:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--platform-color) 28%, transparent);
+}
+
+.compact-profile:not([data-motion='none']) .button:hover {
+  transform: translateY(-2px);
+  background: #ffffff0c;
+}
+
+.compact-profile[data-motion='lively'] .avatar:hover {
+  transform: rotate(-7deg) scale(1.23);
+}
+
+.compact-profile[data-motion='lively'] .profile-banner-wrap:hover .banner {
+  transform: scale(1.06);
+}
+
+.compact-profile[data-motion='lively'] .profile-views svg {
+  animation: view-pulse 4s ease-in-out infinite;
+}
+
+.compact-profile[data-motion='none'] * {
+  animation: none !important;
+  transition: none !important;
+}
+
+@keyframes entry-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes entry-ripple {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes entry-breathe {
+  50% {
+    opacity: 0.65;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes part-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes view-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry-gate *,
+  .entry-gate *:before,
+  .compact-profile,
+  .compact-profile * {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .compact-profile {
+    padding: 16px;
+  }
+
+  .compact-profile .profile-actions {
+    gap: 8px;
+  }
+
+  .profile-page {
+    padding: 20px 12px;
+  }
+}
+
+.entry-gate[data-motion='none'] *,
+.entry-gate[data-motion='none'] *:before {
+  animation: none !important;
+  transition: none !important;
+}

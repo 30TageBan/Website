@@ -1,0 +1,380 @@
+/* Portfolio editor: focused sections instead of one continuous form. */
+.editor-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem 0 1.8rem;
+}
+
+.editor-heading h1 {
+  margin-bottom: 0.5rem;
+}
+
+.editor-heading .eyebrow {
+  margin-bottom: 0.5rem;
+}
+
+.portfolio-editor {
+  display: grid;
+  grid-template-columns: 235px minmax(0, 1fr);
+  gap: 1.8rem;
+  align-items: start;
+}
+
+.editor-sidebar {
+  position: sticky;
+  top: 1.25rem;
+  background: #0c0d16b8;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 0.55rem;
+  backdrop-filter: blur(18px);
+}
+
+.editor-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.editor-sidebar nav button {
+  justify-content: flex-start;
+  text-align: left;
+  width: 100%;
+  gap: 0.8rem;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 10px;
+  padding: 0.85rem 0.7rem;
+  color: var(--muted);
+}
+
+.editor-sidebar nav button:hover {
+  background: #ffffff05;
+  color: #eee;
+}
+
+.editor-sidebar nav button.selected {
+  background: #b9a5ff12;
+  border-color: #b9a5ff25;
+  color: #ede8ff;
+}
+
+.editor-nav-symbol {
+  width: 23px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #b7acd4;
+}
+
+.editor-sidebar strong {
+  display: block;
+  font-size: 0.83rem;
+  font-weight: 500;
+}
+
+.editor-sidebar small {
+  display: block;
+  font-size: 0.66rem;
+  margin-top: 0.22rem;
+  opacity: 0.65;
+  line-height: 1.5;
+}
+
+.section-count {
+  margin-left: auto;
+  padding: 0.15rem 0.4rem;
+  background: #ffffff0b;
+  border-radius: 5px;
+  font-size: 0.68rem;
+}
+
+.editor-sidebar-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.66rem;
+  line-height: 1.5;
+  color: var(--muted);
+  padding: 1rem 0.7rem 0.5rem;
+  margin-top: 0.7rem;
+  border-top: 1px solid var(--border);
+}
+
+.save-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #86bfa3;
+  flex-shrink: 0;
+}
+
+.save-indicator.unsaved {
+  background: #e9b35e;
+}
+
+.editor-main {
+  min-width: 0;
+}
+
+.editor-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.3rem 0 1.15rem;
+}
+
+.editor-section-heading h2 {
+  font-size: 1.35rem;
+  letter-spacing: -0.035em;
+  margin: 0;
+}
+
+.editor-section-heading .eyebrow {
+  font-size: 0.61rem;
+  margin: 0 0 0.4rem;
+}
+
+.editor-step {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-settings {
+  padding: 1.5rem;
+  margin: 0;
+}
+
+.editor-section[hidden],
+.editor-settings[hidden],
+.editor-links[hidden] {
+  display: none !important;
+}
+
+.editor-section > h2:first-child {
+  margin-top: 0;
+}
+
+.editor-section .form-grid.four {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.editor-section .form-grid.three {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.editor-section > p {
+  margin-bottom: 1rem;
+}
+
+.editor-section .title-preview {
+  margin-bottom: 0;
+}
+
+.editor-section .button-editor {
+  grid-template-columns: 1fr 1fr;
+}
+
+.editor-section .button-editor > .inline-actions {
+  grid-column: 1/-1;
+  margin-bottom: 0.5rem;
+}
+
+.editor-section .button-editor {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.editor-section .music-settings > label {
+  margin-bottom: 1rem;
+}
+
+.editor-savebar {
+  position: sticky;
+  bottom: 0.8rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  margin: 1.5rem -1rem -0.5rem;
+  background: #12131ef2;
+  border: 1px solid #ffffff16;
+  border-radius: 12px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 12px 30px #0003;
+}
+
+.editor-savebar strong {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.editor-savebar span {
+  display: block;
+  max-width: 360px;
+  color: var(--muted);
+  font-size: 0.67rem;
+  line-height: 1.6;
+  margin-top: 0.2rem;
+}
+
+.editor-savebar button {
+  flex-shrink: 0;
+}
+
+.editor-links {
+  margin: 0;
+}
+
+.editor-links .list-row {
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.editor-links .list-row > .grow {
+  flex-basis: 40%;
+}
+
+.editor-links .list-row > button {
+  font-size: 0.75rem;
+  padding: 0.55rem 0.7rem;
+}
+
+.editor-settings .ng-invalid.ng-touched {
+  border-color: #f87171;
+}
+
+.editor-settings .discord-preview {
+  margin-bottom: 0;
+}
+
+@media (max-width: 960px) {
+  .portfolio-editor {
+    grid-template-columns: 195px minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .editor-sidebar nav button {
+    padding: 0.8rem 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .editor-sidebar small {
+    font-size: 0.61rem;
+  }
+
+  .editor-settings {
+    padding: 1.2rem;
+  }
+
+  .editor-savebar {
+    flex-wrap: wrap;
+  }
+
+  .editor-savebar > div {
+    flex: 1;
+    min-width: 170px;
+  }
+}
+
+@media (max-width: 700px) {
+  .editor-heading {
+    padding: 1.5rem 0 1.25rem;
+  }
+
+  .editor-heading p {
+    font-size: 0.8rem;
+  }
+
+  .editor-heading > a {
+    font-size: 0.7rem;
+    padding: 0.55rem 0.65rem;
+    white-space: nowrap;
+  }
+
+  .portfolio-editor {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .editor-sidebar {
+    position: static;
+    padding: 0.45rem;
+  }
+
+  .editor-sidebar nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.2rem;
+  }
+
+  .editor-sidebar nav button {
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.6rem 0.2rem;
+  }
+
+  .editor-sidebar strong {
+    font-size: 0.67rem;
+    white-space: nowrap;
+  }
+
+  .editor-sidebar small,
+  .section-count {
+    display: none;
+  }
+
+  .editor-nav-symbol {
+    font-size: 1rem;
+  }
+
+  .editor-sidebar-note {
+    margin-top: 0.4rem;
+    padding: 0.55rem 0.4rem 0.15rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .editor-section-heading {
+    margin-top: 0;
+  }
+
+  .editor-savebar {
+    bottom: 0.5rem;
+  }
+
+  .editor-links .list-row > .grow {
+    flex-basis: 60%;
+  }
+}
+
+@media (max-width: 480px) {
+  .editor-section .form-grid.three,
+  .editor-section .form-grid.four,
+  .editor-section .button-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-savebar {
+    margin-inline: -0.6rem;
+  }
+
+  .editor-savebar > button {
+    width: 100%;
+  }
+
+  .editor-heading {
+    align-items: flex-start;
+  }
+
+  .editor-heading h1 {
+    font-size: 1.7rem;
+  }
+}

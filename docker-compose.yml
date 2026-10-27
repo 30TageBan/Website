@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: chrisg
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - npm_local
+    ports:
+      - '127.0.0.1:5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d chrisg']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    environment:
+      NODE_ENV: production
+      TRUST_PROXY: ${TRUST_PROXY:-1}
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/chrisg?schema=public
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET muss gesetzt sein}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://chris-g.dev}
+      DISCORD_LOG_CHANNEL_ID: ${DISCORD_LOG_CHANNEL_ID:-}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN:-}
+      DATA_DIR: /data
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+    volumes:
+      - ./data:/data
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - npm_local
+      - egress
+    ports:
+      - '127.0.0.1:3000:3000'
+    restart: unless-stopped
+
+networks:
+  egress:
+    driver: bridge
+    internal: false
+  npm_local:
+    external: true

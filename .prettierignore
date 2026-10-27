@@ -1,0 +1,9 @@
+node_modules/
+**/node_modules/
+**/dist/
+**/.angular/
+.migration-backup/
+data/
+package-lock.json
+**/*.tsbuildinfo
+**/.env*

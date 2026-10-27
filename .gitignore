@@ -1,0 +1,49 @@
+# dependencies
+node_modules
+
+# next
+.next
+out
+
+# env
+.env
+.env.*
+!.env.example
+!.env.*.example
+!*.env.example
+
+# prisma
+**/prisma/dev.db
+
+# logs
+*.log
+
+# data volume (local)
+/data
+
+# misc
+.DS_Store
+.idea
+
+.angular
+dist
+.migration-backup
+
+# Generated files, local tools and backups
+coverage/
+*.tsbuildinfo
+.vscode/
+*.swp
+*.tmp
+*.bak
+*.sql
+*.dump
+*.tar
+*.tar.gz
+*.zip
+*.pem
+*.key
+*.p12
+*.pfx
+Thumbs.db
+Desktop.ini

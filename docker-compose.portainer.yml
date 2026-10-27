@@ -1,0 +1,56 @@
+# GitHub/Portainer: set WEBSITE_IMAGE to ghcr.io/owner/repository:latest.
+# Alternatively build the image on the same Docker host before deploying this stack.
+# docker build -f apps/web/Dockerfile -t chrisg-website:2026-10-24 .
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD setzen}
+      POSTGRES_DB: chrisg
+    volumes:
+      - ${SITE_DATA_DIR:?Absoluten Datenpfad setzen}/postgres:/var/lib/postgresql/data
+    networks:
+      backend:
+        aliases:
+          - chrisg-website-db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d chrisg']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    image: ${WEBSITE_IMAGE:-chrisg-website:2026-10-24}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD setzen}@chrisg-website-db:5432/chrisg?schema=public
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET setzen}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://chris-g.dev}
+      TRUST_PROXY: ${TRUST_PROXY:-1}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN:-}
+      DISCORD_LOG_CHANNEL_ID: ${DISCORD_LOG_CHANNEL_ID:-1563468783497125990}
+      DATA_DIR: /data
+      PORT: 3000
+    volumes:
+      - ${SITE_DATA_DIR:?Absoluten Datenpfad setzen}:/data
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      backend:
+      egress:
+      npm_local:
+        aliases:
+          - chrisg-website
+
+networks:
+  backend:
+    internal: true
+  egress:
+    driver: bridge
+    internal: false
+  npm_local:
+    external: true

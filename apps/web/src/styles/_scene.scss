@@ -1,0 +1,599 @@
+/* Shared animated scene: profile and administration use the same configuration. */
+app-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  display: block;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.scene-media,
+.scene-motion,
+.scene-shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.scene-media {
+  object-fit: cover;
+}
+
+.scene-motion {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.scene-shade {
+  pointer-events: none;
+}
+
+.profile-page {
+  background: transparent;
+}
+
+.entry-gate {
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
+}
+
+.entry-gate button {
+  border: 0;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 600;
+  gap: 0.6rem;
+}
+
+.entry-gate button span {
+  font-size: 1.5rem;
+}
+
+.admin-shell {
+  z-index: 0;
+}
+
+.bg-aurora {
+  background:
+    radial-gradient(ellipse at 25% 10%, #00df9a45, transparent 55%),
+    radial-gradient(ellipse at 80% 60%, #a855f74a, transparent 60%), #020b15;
+}
+
+.bg-crimson {
+  background:
+    radial-gradient(ellipse at 50% 0%, #c8202866, transparent 60%),
+    radial-gradient(ellipse at 30% 90%, #9b141a44, transparent 55%), #080205;
+}
+
+.bg-ocean {
+  background:
+    radial-gradient(ellipse at 30% 20%, #00a3c455, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, #2155ff44, transparent 60%), #020a19;
+}
+
+.bg-forest {
+  background:
+    radial-gradient(ellipse at 25% 30%, #22c55e44, transparent 55%),
+    radial-gradient(ellipse at 80% 80%, #a3b11a33, transparent 60%), #030d08;
+}
+
+.bg-galaxy {
+  background:
+    radial-gradient(ellipse at 25% 20%, #4338ca66, transparent 60%),
+    radial-gradient(ellipse at 75% 70%, #db277755, transparent 55%), #05020f;
+}
+
+.bg-synthwave {
+  background:
+    radial-gradient(ellipse at 50% 45%, #f7258544, transparent 55%),
+    linear-gradient(#10032b, #2a0640 55%, #050110);
+}
+
+.bg-ember {
+  background:
+    radial-gradient(ellipse at 30% 100%, #f9731666, transparent 60%),
+    radial-gradient(ellipse at 90% 50%, #b91c1c55, transparent 60%), #0d0503;
+}
+
+.bg-ice {
+  background:
+    radial-gradient(ellipse at 20% 20%, #7dd3fc44, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, #c4b5fd44, transparent 55%), #020c15;
+}
+
+.motion-drift {
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  background:
+    radial-gradient(ellipse at 20% 40%, var(--scene-accent), transparent 50%),
+    radial-gradient(ellipse at 75% 65%, #38bdf866, transparent 55%);
+  mix-blend-mode: screen;
+  opacity: 0.35;
+  animation: scene-drift var(--scene-duration) ease-in-out infinite alternate;
+}
+
+.motion-aurora {
+  inset: -40%;
+  width: 180%;
+  height: 180%;
+  background: conic-gradient(
+    from 30deg,
+    transparent 12%,
+    #22d3ee55 20%,
+    transparent 30%,
+    var(--scene-accent) 45%,
+    transparent 60%,
+    #34d39966 75%,
+    transparent 85%
+  );
+  filter: blur(55px);
+  opacity: 0.5;
+  animation: scene-aurora var(--scene-duration) ease-in-out infinite alternate;
+}
+
+.motion-stars {
+  inset: -15%;
+  width: 130%;
+  height: 130%;
+  background-image:
+    radial-gradient(1px 1px at 15px 30px, #fff 90%, transparent),
+    radial-gradient(2px 2px at 110px 75px, #b2cfff 70%, transparent),
+    radial-gradient(1px 1px at 75px 130px, #fff 90%, transparent);
+  background-size:
+    167px 181px,
+    263px 227px,
+    137px 213px;
+  animation: scene-stars var(--scene-duration) linear infinite alternate;
+}
+
+.motion-rain {
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: repeating-linear-gradient(
+    105deg,
+    transparent 0 40px,
+    #b6d7ff45 41px,
+    transparent 42px 95px
+  );
+  mask-image: repeating-linear-gradient(0deg, #000 0 35px, transparent 60px 150px);
+  animation: scene-rain calc(var(--scene-duration) / 10) linear infinite;
+  opacity: 0.4;
+}
+
+.motion-snow {
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image:
+    radial-gradient(3px 3px at 30px 30px, #fff9 90%, transparent),
+    radial-gradient(2px 2px at 130px 90px, #fff7 90%, transparent),
+    radial-gradient(4px 4px at 50px 150px, #fff6 90%, transparent);
+  background-size:
+    181px 217px,
+    269px 251px,
+    307px 293px;
+  animation: scene-snow var(--scene-duration) linear infinite;
+  opacity: 0.7;
+}
+
+.motion-grid {
+  top: 40%;
+  height: 100%;
+  width: 160%;
+  left: -30%;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--scene-accent) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--scene-accent) 60%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 70px 70px;
+  transform: perspective(400px) rotateX(60deg);
+  transform-origin: center top;
+  mask-image: linear-gradient(transparent, #000 40%);
+  animation: scene-grid calc(var(--scene-duration) / 3) linear infinite;
+  opacity: 0.5;
+}
+
+.motion-fireflies {
+  inset: -15%;
+  width: 130%;
+  height: 130%;
+  background-image:
+    radial-gradient(3px 3px at 20px 30px, #bef264 20%, #bef26455 60%, transparent),
+    radial-gradient(4px 4px at 140px 120px, var(--scene-accent) 20%, transparent 80%);
+  background-size:
+    237px 293px,
+    331px 227px;
+  animation: scene-fireflies calc(var(--scene-duration) / 2) ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 5px #bef264);
+}
+
+@keyframes scene-drift {
+  from {
+    transform: translate(-5%, -4%) rotate(-8deg);
+  }
+  to {
+    transform: translate(6%, 5%) rotate(10deg);
+  }
+}
+
+@keyframes scene-aurora {
+  from {
+    transform: rotate(-15deg) scale(0.9);
+  }
+  to {
+    transform: rotate(25deg) scale(1.2);
+  }
+}
+
+@keyframes scene-stars {
+  from {
+    transform: translate(0, 0);
+    opacity: 0.6;
+  }
+  to {
+    transform: translate(3%, 5%);
+    opacity: 1;
+  }
+}
+
+@keyframes scene-rain {
+  to {
+    transform: translate(-30px, 150px);
+  }
+}
+
+@keyframes scene-snow {
+  to {
+    transform: translate(40px, 217px);
+  }
+}
+
+@keyframes scene-grid {
+  to {
+    background-position: 0 70px;
+  }
+}
+
+@keyframes scene-fireflies {
+  from {
+    transform: translate(-2%, 3%);
+    opacity: 0.35;
+  }
+  to {
+    transform: translate(2%, -5%);
+    opacity: 0.9;
+  }
+}
+
+.cursor-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  pointer-events: none;
+  z-index: 120;
+}
+
+.external-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(520px, calc(100% - 2rem));
+  max-height: calc(100dvh - 2rem);
+  padding: 2rem;
+  border: 0;
+  background: transparent;
+  color: #f4f4f5;
+  text-align: center;
+  overflow: auto;
+}
+
+.external-dialog::backdrop {
+  background: #050505d9;
+  backdrop-filter: blur(18px);
+}
+
+.external-dialog h2 {
+  margin: 1.2rem 0 0.3rem;
+  font-size: 1.1rem;
+}
+
+.external-dialog form > .checkbox {
+  justify-content: center;
+  margin-top: 2rem;
+  font-size: 0.8rem;
+}
+
+.external-host {
+  display: block;
+  margin: 1.6rem 0 1.9rem;
+  overflow-wrap: anywhere;
+}
+
+.warning-mark {
+  display: grid;
+  place-items: center;
+  margin: auto;
+  width: 27px;
+  height: 30px;
+  border: 1px solid #8a8a9b;
+  border-radius: 9px;
+  font-size: 1.1rem;
+  color: #b7b7c8;
+}
+
+.external-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.external-actions button {
+  border-radius: 999px;
+  border: 0;
+  padding: 0.8rem 1.2rem;
+}
+
+.confirm-open {
+  background: #a3be2520;
+}
+
+.confirm-open span {
+  color: #b6d44b;
+}
+
+.cancel-open {
+  background: #b84f4f20;
+}
+
+.cancel-open span {
+  color: #f87171;
+}
+
+.reset-link-warning {
+  margin-top: 1rem;
+  font-size: 0.7rem;
+  color: var(--muted);
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.music-player {
+  margin-top: 1.75rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #0003;
+}
+
+.music-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.85rem;
+}
+
+.music-title span {
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.music-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.6rem;
+}
+
+.music-controls button {
+  min-width: 40px;
+  padding: 0.5rem;
+}
+
+.music-controls input {
+  flex: 1;
+  min-width: 0;
+}
+
+.music-player input[type='range'] {
+  border: 0;
+  padding: 0;
+  height: 22px;
+  accent-color: #eee;
+  background: transparent;
+}
+
+.music-seek {
+  margin: 0.8rem 0 0;
+}
+
+.music-player > p {
+  margin-top: 0.6rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-motion {
+    animation: none !important;
+  }
+
+  .scene-media:is(video) {
+    display: none;
+  }
+
+  .cursor-canvas {
+    display: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .cursor-canvas {
+    display: none;
+  }
+}
+
+.scene-blur {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.design-preview-actions {
+  margin: 1rem 0;
+}
+
+.animated-title {
+  position: relative;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+  line-height: 1.25;
+}
+
+.title-gradient,
+.title-shimmer {
+  color: transparent;
+  background: linear-gradient(110deg, var(--title-accent), #f0abfc, #fff, var(--title-accent));
+  background-size: 240% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: title-gradient 6s ease-in-out infinite alternate;
+}
+
+.title-glow {
+  color: #fff;
+  text-shadow: 0 0 14px var(--title-accent);
+  animation: title-glow 3s ease-in-out infinite alternate;
+}
+
+.title-shimmer {
+  background: linear-gradient(110deg, var(--title-accent) 25%, #fff 45%, var(--title-accent) 65%);
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: title-gradient 4s linear infinite;
+}
+
+.title-float {
+  animation: title-float 4s ease-in-out infinite;
+}
+
+.typewriter-mirror {
+  visibility: hidden;
+  display: block;
+}
+
+.typewriter-visible {
+  position: absolute;
+  inset: 0;
+}
+
+.title-preview {
+  margin: 1rem 0 2rem;
+  padding: 1.3rem;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+
+.title-preview h1 {
+  font-size: 1.8rem;
+}
+
+.discord-settings {
+  margin: 1rem 0 1.5rem;
+}
+
+.discord-preview {
+  max-width: 520px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 1rem 0 1.5rem;
+  background: #080a12;
+}
+
+.discord-banner {
+  display: block;
+  width: 100%;
+  height: 135px;
+  object-fit: cover;
+}
+
+.discord-preview .profile-heading {
+  padding: 1rem;
+}
+
+.discord-preview > button {
+  margin: 0 1rem 1rem;
+}
+
+@keyframes title-gradient {
+  from {
+    background-position: 0 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes title-glow {
+  from {
+    text-shadow: 0 0 6px var(--title-accent);
+  }
+  to {
+    text-shadow:
+      0 0 22px var(--title-accent),
+      0 0 36px color-mix(in srgb, var(--title-accent) 45%, transparent);
+  }
+}
+
+@keyframes title-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-title {
+    animation: none !important;
+  }
+
+  .typewriter-visible {
+    position: static;
+  }
+
+  .typewriter-mirror {
+    display: none;
+  }
+}

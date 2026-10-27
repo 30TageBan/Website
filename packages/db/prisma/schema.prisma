@@ -1,0 +1,100 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  passwordHash      String
+  totpEnabled       Boolean   @default(false)
+  totpSecretEnc     String? // verschlüsselt (AES-GCM via SESSION_SECRET)
+  recoveryCodesHash String? // optional, JSON, gehasht
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  sessions          Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+}
+
+model Portfolio {
+  id                 String @id @default(cuid())
+  title              String
+  subtitle           String
+  avatarUrl          String
+  bannerUrl          String
+  seoTitle           String
+  seoDescription     String
+  seoOgImageUrl      String
+  backgroundPreset   String
+  backgroundSettings Json
+  spotifyTrackId     String
+  content            Json   @default("{}")
+
+  viewsCount Int @default(0)
+
+  links PortfolioLink[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PortfolioLink {
+  id          String    @id @default(cuid())
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
+
+  type      String
+  label     String?
+  url       String
+  color     String?
+  sortOrder Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([portfolioId, sortOrder])
+}
+
+model ShortLink {
+  id               String    @id @default(cuid())
+  key              String    @unique
+  destinationUrl   String
+  expiresAt        DateTime?
+  maxViews         Int?
+  requireClick     Boolean   @default(false)
+  countdownSeconds Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  viewsCount Int @default(0)
+}
+
+model FileObject {
+  id           String  @id @default(cuid())
+  key          String  @unique
+  originalName String
+  mimeType     String
+  sizeBytes    Int
+  storagePath  String
+  isPublic     Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  viewsCount     Int       @default(0)
+  lastAccessedAt DateTime?
+}

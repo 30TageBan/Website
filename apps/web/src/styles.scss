@@ -1,0 +1,25 @@
+// Order preserves the existing cascade while separating the styling concerns.
+@use './styles/base';
+@use './styles/scene';
+@use './styles/editor';
+@use './styles/portfolio';
+@use './styles/interaction';
+@use './styles/extensions';
+
+app-root.public-content {
+  -webkit-user-select: none;
+  user-select: none;
+
+  img {
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+  }
+
+  input,
+  textarea,
+  select,
+  [contenteditable]:not([contenteditable='false']) {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}

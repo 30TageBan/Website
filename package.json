@@ -1,0 +1,28 @@
+{
+  "name": "chris-g-dev",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "db:local:start": "docker compose --env-file .env.development.local -p chrisg-website-dev -f docker-compose.dev.yml up -d --wait",
+    "db:local:stop": "docker compose --env-file .env.development.local -p chrisg-website-dev -f docker-compose.dev.yml stop",
+    "test": "node --test tests/*.cjs",
+    "dev": "node scripts/dev.mjs",
+    "build": "npm run build -w @chrisg/web",
+    "start": "npm run start -w @chrisg/api",
+    "db:generate": "npm run generate -w @chrisg/db",
+    "db:migrate:dev": "npm run migrate:dev -w @chrisg/db",
+    "db:migrate:deploy": "npm run migrate:deploy -w @chrisg/db",
+    "db:studio": "npm run studio -w @chrisg/db",
+    "db:seed": "npm run seed -w @chrisg/db",
+    "typecheck": "npm run typecheck -w @chrisg/web",
+    "format": "prettier --write \".github/**/*.yml\" \"{apps,packages,shared,scripts,tests}/**/*.{ts,mjs,cjs,html,scss,json,yml,yaml}\" \"*.{json,yml,yaml,md}\"",
+    "format:check": "prettier --check \".github/**/*.yml\" \"{apps,packages,shared,scripts,tests}/**/*.{ts,mjs,cjs,html,scss,json,yml,yaml}\" \"*.{json,yml,yaml,md}\""
+  },
+  "devDependencies": {
+    "prettier": "3.9.10",
+    "typescript": "~5.9.3"
+  }
+}

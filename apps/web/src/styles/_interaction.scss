@@ -1,0 +1,173 @@
+/* Magnetic entry and layered 3D card movement across the full viewport. */
+.entry-magnet {
+  width: min(360px, 90vw);
+  height: 170px;
+  display: grid;
+  place-items: center;
+  perspective: 650px;
+  --move-x: 0px;
+  --move-y: 0px;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+}
+
+.entry-magnet button {
+  animation: none;
+  transform: translate3d(var(--move-x), var(--move-y), 0) rotateX(var(--tilt-x))
+    rotateY(var(--tilt-y)) scale(1);
+  transition:
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.4s,
+    text-shadow 0.4s;
+  will-change: transform;
+  padding: 30px;
+  white-space: nowrap;
+}
+
+.entry-magnet.pointer-active button,
+.entry-magnet button:focus-visible {
+  transform: translate3d(var(--move-x), var(--move-y), 0) rotateX(var(--tilt-x))
+    rotateY(var(--tilt-y)) scale(1.18);
+  text-shadow: 0 0 22px #ffffff66;
+  filter: brightness(1.2);
+}
+
+.entry-magnet .entry-label {
+  animation: entry-breathe 3s ease-in-out infinite;
+}
+
+.entry-magnet.pointer-active .entry-label {
+  animation-play-state: paused;
+}
+
+.entry-magnet.pointer-active .entry-symbol:before {
+  animation-duration: 1s;
+}
+
+.entry-magnet.pointer-active .entry-symbol circle {
+  animation-duration: 1.4s;
+}
+
+.portfolio-float {
+  width: 100%;
+  max-width: 30rem;
+  animation: portfolio-hover 6s ease-in-out infinite;
+}
+
+.portfolio-float[data-motion='subtle'] {
+  animation-name: portfolio-hover-subtle;
+  animation-duration: 8s;
+}
+
+.portfolio-float[data-motion='none'] {
+  animation: none;
+}
+
+.card-motion-surface {
+  position: relative;
+  perspective: 1100px;
+  --move-x: 0px;
+  --move-y: 0px;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+}
+
+.card-motion-target {
+  position: relative;
+  transform: translate3d(var(--move-x), var(--move-y), 0) rotateX(var(--tilt-x))
+    rotateY(var(--tilt-y));
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.card-motion-surface.pointer-active .card-motion-target {
+  transition-duration: 0.22s;
+  transform: translate3d(var(--move-x), var(--move-y), 10px) rotateX(var(--tilt-x))
+    rotateY(var(--tilt-y)) scale(1.025);
+}
+
+.card-pointer-light {
+  position: absolute;
+  inset: 0;
+  border-radius: 17px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s;
+  background: radial-gradient(
+    circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+    #ffffff17,
+    transparent 58%
+  );
+  box-shadow: inset 0 0 0 1px #ffffff12;
+}
+
+.pointer-active .card-pointer-light {
+  opacity: 1;
+}
+
+.card-motion-target .compact-profile {
+  width: 100%;
+  max-width: none;
+}
+
+@keyframes portfolio-hover {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.35deg);
+  }
+  50% {
+    transform: translateY(-13px) rotate(0.35deg);
+  }
+}
+
+@keyframes portfolio-hover-subtle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .portfolio-float {
+    animation: none;
+  }
+
+  .card-motion-target,
+  .entry-magnet button {
+    will-change: auto;
+  }
+}
+
+.portfolio-float[data-motion='none'] .card-motion-target {
+  transform: none !important;
+  transition: none;
+}
+
+.portfolio-float[data-motion='none'] .card-pointer-light {
+  display: none;
+}
+
+.entry-gate[data-motion='none'] .entry-magnet button {
+  transform: none !important;
+  filter: none;
+  text-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-float,
+  .card-motion-target,
+  .entry-magnet button {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto;
+  }
+
+  .card-pointer-light {
+    display: none;
+  }
+}
